@@ -22,7 +22,6 @@ class RegionFixtures extends Fixture
         $regionsData = $this->geoApiService->getRegionData();
         $regionMap   = [];
 
-        dump($regionsData);
         // Récupérer les régions
         foreach ($regionsData as $regionData) {
             // Check if the region already exists
@@ -35,12 +34,13 @@ class RegionFixtures extends Fixture
                 $manager->persist($region);
             }
 
+            $this->addReference('region-'.$regionData['code'], $region);
+
             $regionMap[$regionData['code']] = $region;
         }
 
         // Récupérer les départements de chaque région
         foreach ($regionMap as $regionCode => $region) {
-            dump($regionCode);
             $departmentsData = $this->geoApiService->getRegionDepartmentsData($regionCode);
             foreach ($departmentsData as $departmentData) {
                 // Check if the department already exists in the region
@@ -56,6 +56,8 @@ class RegionFixtures extends Fixture
                     $department->setRegion($region);
                     $department->setCode($departmentData['code']);
                     $manager->persist($department);
+                    // Adding reference to the department
+                    $this->addReference('department-'.$departmentData['code'], $department);
                 }
             }
         }
