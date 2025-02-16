@@ -6,7 +6,7 @@
 :root {
   --primary: #fff;
   --primary-font: #000;
-  --secondary: #92dce5;
+  --secondary: #1fafcf;
   --secondary-light: #a9e4ec;
   --secondary-font: #fff;
 }
@@ -129,4 +129,63 @@ header {
       justify-content: flex-end;
     }
   }
+}
+
+.categorie {
+	display: inline-block;
+	vertical-align: top;
+  position: relative;
+}
+
+.categorie ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+	background-color: var(--secondary);
+  width: 300px;
+}
+
+.categorie:hover ul {
+	display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: left;
+  justify-content: center;
+
+  li {
+    padding: 1rem;
+    position: relative;
+
+    a {
+      text-decoration: none;
+      color: var(--secondary-font);
+    }
+  }
+
+  li:hover {
+    background-color: var(--secondary-light);
+    .sous-categorie {
+      display: block;
+      vertical-align: top;
+    }
+
+    .sous-categorie ul {
+      display: block;
+    }
+  }
+}
+
+.sous-categorie {
+  display: none;
+  vertical-align: top;
+}
+
+.sous-categorie ul {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 300px;
+  background-color: var(--secondary);
+  list-style: none;
 }

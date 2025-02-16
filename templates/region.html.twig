@@ -1,0 +1,26 @@
+{% if app.user %}
+{% set accessible = get_accessible_regions_and_departments(app.user) %}
+
+<section class="app-btn categorie">
+    <h3>Régions Disponible</h3>
+    <ul>
+        {% for region in accessible.regions %}
+            <li>
+                <a href="#">{{ region.name }}</a>
+                <section class="sous-categorie">
+                    <ul>
+                        {% for department in accessible.departments %}
+                            {% if department in region.departments %}
+                            <li>
+                                <a href="#">{{ department.name }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </section>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endif %}

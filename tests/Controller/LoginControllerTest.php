@@ -29,8 +29,8 @@ class LoginControllerTest extends WebTestCase
         /** @var UserPasswordHasherInterface $passwordHasher */
         $passwordHasher = $container->get('security.user_password_hasher');
 
-        $user = (new User())->setEmail('email@example.com');
-        $user->setPassword($passwordHasher->hashPassword($user, 'password'));
+        $user = (new User())->setUsername('admin');
+        $user->setPassword($passwordHasher->hashPassword($user, 'admin'));
 
         $em->persist($user);
         $em->flush();
@@ -38,13 +38,13 @@ class LoginControllerTest extends WebTestCase
 
     public function testLogin(): void
     {
-        // Denied - Can't login with invalid email address.
+        // Denied - Can't login with invalid username.
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
         $this->client->submitForm('Sign in', [
-            '_username' => 'doesNotExist@example.com',
-            '_password' => 'password',
+            '_username' => 'jsp',
+            '_password' => 'admin',
         ]);
 
         self::assertResponseRedirects('/login');
@@ -58,7 +58,7 @@ class LoginControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         $this->client->submitForm('Sign in', [
-            '_username' => 'email@example.com',
+            '_username' => 'admin',
             '_password' => 'bad-password',
         ]);
 
@@ -70,11 +70,11 @@ class LoginControllerTest extends WebTestCase
 
         // Success - Login with valid credentials is allowed.
         $this->client->submitForm('Sign in', [
-            '_username' => 'email@example.com',
-            '_password' => 'password',
+            '_username' => 'admin',
+            '_password' => 'admin',
         ]);
 
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/home');
         $this->client->followRedirect();
 
         self::assertSelectorNotExists('.alert-danger');
